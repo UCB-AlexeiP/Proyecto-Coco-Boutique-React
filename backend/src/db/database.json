@@ -1,0 +1,73 @@
+{
+    "usuarios": [
+    {
+        "id": 1,
+        "usuario": "admin",
+        "nombre": "Administrador",
+        "passwordHash": "$2a$10$WjPXZbDSd07w3kx1uFklW.Wy1EuDH884kVONWuZsGB/goczoOeRzS"
+    }
+],
+    "productos": [
+    {
+        "id": 1,
+        "nombre": "Vestido de verano",
+        "categoria": "vestidos",
+        "precio": 100,
+        "stock": 8,
+        "tallas": ["S", "M", "L"],
+        "colores": ["Durazno", "Blanco"],
+        "descripcion": "Vestido ligero de algodón, ideal para el día a día.",
+        "imagen": ""
+    },
+    {
+        "id": 2,
+        "nombre": "Camisa de manga larga",
+        "categoria": "blusas",
+        "precio": 100,
+        "stock": 5,
+        "tallas": ["M", "L", "XL"],
+        "colores": ["Lila"],
+        "descripcion": "Camisa fresca de manga larga, corte holgado.",
+        "imagen": ""
+    },
+    {
+        "id": 3,
+        "nombre": "Chompa tejida oversize",
+        "categoria": "chompas",
+        "precio": 150,
+        "stock": 6,
+        "tallas": ["S", "M", "L", "XL"],
+        "colores": ["Beige", "Lila"],
+        "descripcion": "Chompa tejida de punto grueso, calidez y estilo.",
+        "imagen": ""
+    }
+],
+    "ventas": [
+    {
+        "id": 1,
+        "productoId": 1,
+        "cliente": "María Torrez",
+        "cantidad": 2,
+        "precioUnitario": 100,
+        "total": 200,
+        "metodoPago": "Qr",
+        "estado": "Completado",
+        "fecha": "2026-09-01",
+        "valorReserva": 0,
+        "observacion": ""
+    },
+    {
+        "id": 2,
+        "productoId": 2,
+        "cliente": "Ana Quiroga",
+        "cantidad": 1,
+        "precioUnitario": 100,
+        "total": 100,
+        "metodoPago": "Efectivo",
+        "estado": "Reserva sin adelanto",
+        "fecha": "2026-09-03",
+        "valorReserva": 0,
+        "observacion": "Retira el viernes"
+    }
+]
+}
