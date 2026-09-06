@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body { @apply font-body text-ink bg-primary-light/40; }
+  h1, h2, h3, h4 { @apply font-display font-semibold; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors; }
+  .btn-primary { @apply btn bg-primary text-white hover:bg-primary-dark; }
+  .btn-secondary { @apply btn bg-white text-ink border border-beige-dark hover:bg-beige; }
+  .btn-danger { @apply btn bg-red-50 text-red-600 hover:bg-red-100; }
+  .card { @apply bg-white border border-beige-dark rounded-2xl; }
+  .form-label { @apply block text-sm font-bold text-ink mb-2; }
+  .form-input {
+    @apply w-full px-3.5 py-2.5 rounded-xl border border-beige-dark bg-white text-sm text-ink
+          focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition;
+  }
+}
