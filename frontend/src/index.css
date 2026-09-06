@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  body { @apply font-body text-ink bg-primary-light/40; }
+    body { @apply font-body text-ink bg-primary-light/40; }
   h1, h2, h3, h4 { @apply font-display font-semibold; }
 }
 
