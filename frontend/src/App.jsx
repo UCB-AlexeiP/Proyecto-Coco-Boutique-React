@@ -9,12 +9,15 @@ import ProductosListPage from "./pages/ProductosListPage";
 import ProductoFormPage from "./pages/ProductoFormPage";
 import VentasListPage from "./pages/VentasListPage";
 import VentaFormPage from "./pages/VentaFormPage";
+import CatalogoPage from "./pages/CatalogoPage";
 
 export default function App() {
   return (
     <AuthProvider>
       <Routes>
+        <Route path="/catalogo" element={<CatalogoPage />} />
         <Route path="/login" element={<LoginPage />} />
+
         <Route element={<RutaProtegida><AdminLayout /></RutaProtegida>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/productos" element={<ProductosListPage />} />
@@ -24,8 +27,9 @@ export default function App() {
           <Route path="/ventas/nueva" element={<VentaFormPage />} />
           <Route path="/ventas/:id/editar" element={<VentaFormPage />} />
         </Route>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+
+        <Route path="/" element={<Navigate to="/catalogo" replace />} />
+        <Route path="*" element={<Navigate to="/catalogo" replace />} />
       </Routes>
     </AuthProvider>
   );

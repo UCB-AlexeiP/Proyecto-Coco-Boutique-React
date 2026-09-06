@@ -7,21 +7,22 @@ const TALLAS_DISPONIBLES = ["S", "M", "L", "XL"];
 const ESTADO_INICIAL = { nombre: "", categoria: "", precio: "", stock: "", tallas: [], descripcion: "" };
 
 export default function ProductoFormPage() {
-const { id } = useParams();
-const esEdicion = Boolean(id);
-const navigate = useNavigate();
+    const { id } = useParams();
+    const esEdicion = Boolean(id);
+    const navigate = useNavigate();
 
-const [form, setForm] = useState(ESTADO_INICIAL);
-const [cantidadColores, setCantidadColores] = useState(0);
-const [colores, setColores] = useState([]);
-const [cargando, setCargando] = useState(esEdicion);
-const [guardando, setGuardando] = useState(false);
-const [error, setError] = useState("");
+    const [form, setForm] = useState(ESTADO_INICIAL);
+    const [cantidadColores, setCantidadColores] = useState(0);
+    const [colores, setColores] = useState([]);
+    const [imagen, setImagen] = useState("");
+    const [cargando, setCargando] = useState(esEdicion);
+    const [guardando, setGuardando] = useState(false);
+    const [error, setError] = useState("");
 
-useEffect(() => {
+    useEffect(() => {
     if (!esEdicion) return;
     async function cargar() {
-    try {
+        try {
         const producto = await obtenerProducto(id);
         setForm({
             nombre: producto.nombre, categoria: producto.categoria, precio: producto.precio,
@@ -29,6 +30,7 @@ useEffect(() => {
         });
         setColores(producto.colores || []);
         setCantidadColores((producto.colores || []).length);
+        setImagen(producto.imagen || "");
     } catch (err) {
         setError("No se pudo cargar el producto.");
     } finally {
@@ -48,14 +50,23 @@ function actualizarCantidadColores(valor) {
     });
 }
 
-function alternarTalla(talla) {
+    function alternarTalla(talla) {
     setForm((f) => ({
-    ...f,
-    tallas: f.tallas.includes(talla) ? f.tallas.filter((t) => t !== talla) : [...f.tallas, talla]
+        ...f,
+        tallas: f.tallas.includes(talla) ? f.tallas.filter((t) => t !== talla) : [...f.tallas, talla]
     }));
 }
 
-async function manejarSubmit(evento) {
+    function manejarImagen(evento) {
+    const archivo = evento.target.files[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = () => setImagen(lector.result);
+    lector.readAsDataURL(archivo);
+}
+
+    async function manejarSubmit(evento) {
     evento.preventDefault();
     setError("");
     if (form.tallas.length === 0) {
@@ -63,7 +74,13 @@ async function manejarSubmit(evento) {
         return;
     }
     setGuardando(true);
-    const payload = { ...form, precio: Number(form.precio), stock: Number(form.stock), colores: colores.filter(Boolean) };
+    const payload = {
+        ...form,
+        precio: Number(form.precio),
+        stock: Number(form.stock),
+        colores: colores.filter(Boolean),
+        imagen
+    };
     try {
         if (esEdicion) await actualizarProducto(id, payload);
         else await crearProducto(payload);
@@ -77,7 +94,7 @@ async function manejarSubmit(evento) {
 
 if (cargando) return <p className="text-ink-soft">Cargando producto...</p>;
 
-return (
+    return (
     <div>
         <h1 className="text-2xl text-ink mb-1">{esEdicion ? "Editar producto" : "Registrar nuevo producto"}</h1>
         <p className="text-ink-soft text-sm mb-7">Completa los datos de la prenda para {esEdicion ? "actualizarla en" : "agregarla a"} el catálogo</p>
@@ -104,15 +121,15 @@ return (
             <label className="form-label">Precio (Bs)</label>
             <input type="number" min="0" step="0.01" className="form-input" required value={form.precio}
                 onChange={(e) => setForm({ ...form, precio: e.target.value })} />
-            </div>
+        </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
+            <div>
             <label className="form-label">Stock</label>
             <input type="number" min="0" className="form-input" required value={form.stock}
                 onChange={(e) => setForm({ ...form, stock: e.target.value })} />
-        </div>
+            </div>
         <div>
             <label className="form-label">Cantidad de colores</label>
             <input type="number" min="0" max="8" className="form-input" value={cantidadColores}
@@ -132,11 +149,11 @@ return (
                 }`}>{talla}</span>
                 </label>
             ))}
-            </div>
+        </div>
         </div>
 
         {cantidadColores > 0 && (
-        <div>
+            <div>
             <label className="form-label">Colores</label>
             <div className="flex flex-col gap-2.5">
                 {Array.from({ length: cantidadColores }).map((_, i) => (
@@ -145,13 +162,21 @@ return (
                     onChange={(e) => setColores((c) => { const nuevo = [...c]; nuevo[i] = e.target.value; return nuevo; })} />
             ))}
             </div>
-        </div>
+            </div>
         )}
 
         <div>
             <label className="form-label">Descripción</label>
             <textarea className="form-input min-h-[90px]" value={form.descripcion}
             onChange={(e) => setForm({ ...form, descripcion: e.target.value })} placeholder="Breve descripción de la prenda" />
+        </div>
+
+        <div>
+            <label className="form-label">Imagen del producto</label>
+            <input type="file" accept="image/*" className="form-input" onChange={manejarImagen} />
+            <div className="mt-3 w-28 h-28 rounded-xl border border-dashed border-beige-dark bg-beige flex items-center justify-center overflow-hidden text-xs text-ink-soft text-center">
+            {imagen ? <img src={imagen} alt="Vista previa" className="w-full h-full object-cover" /> : "Sin imagen"}
+            </div>
         </div>
 
         <div className="flex gap-3 pt-2">
